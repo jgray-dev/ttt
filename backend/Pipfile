@@ -9,6 +9,11 @@ flask-cors = "*"
 requests = "*"
 bcrypt = "*"
 python-dotenv = "*"
+flask_sqlalchemy = "*"
+sqlalchemy = "*"
+sqlalchemy_serializer = "*"
+flask_migrate = "*"
+sqlite-web = "*"
 
 [dev-packages]
 
