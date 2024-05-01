@@ -1,0 +1,43 @@
+.lightbackdrop {
+    background-color: #ff99aa;
+    background-image: radial-gradient(at 66% 7%, hsla(310, 69%, 72%, 1) 0px, transparent 50%),
+    radial-gradient(at 59% 88%, hsla(47, 89%, 61%, 1) 0px, transparent 50%),
+    radial-gradient(at 27% 2%, hsla(224, 92%, 63%, 1) 0px, transparent 50%),
+    radial-gradient(at 21% 9%, hsla(57, 96%, 72%, 1) 0px, transparent 50%),
+    radial-gradient(at 10% 77%, hsla(326, 77%, 72%, 1) 0px, transparent 50%),
+    radial-gradient(at 82% 74%, hsla(276, 62%, 70%, 1) 0px, transparent 50%),
+    radial-gradient(at 87% 9%, hsla(223, 62%, 79%, 1) 0px, transparent 50%);
+    background-size: 200% 200%;
+    animation: backdrop-animation 30s ease-in-out infinite;
+}
+
+.darkbackdrop {
+    background-color: #99a7ff;
+    background-image: radial-gradient(at 49% 70%, hsla(12, 63%, 63%, 1) 0px, transparent 50%),
+    radial-gradient(at 29% 63%, hsla(285, 82%, 67%, 1) 0px, transparent 50%),
+    radial-gradient(at 42% 51%, hsla(247, 68%, 60%, 1) 0px, transparent 50%),
+    radial-gradient(at 87% 91%, hsla(222, 71%, 70%, 1) 0px, transparent 50%),
+    radial-gradient(at 99% 75%, hsla(145, 93%, 67%, 1) 0px, transparent 50%),
+    radial-gradient(at 35% 76%, hsla(101, 81%, 60%, 1) 0px, transparent 50%),
+    radial-gradient(at 74% 54%, hsla(351, 62%, 63%, 1) 0px, transparent 50%);
+    background-size: 200% 200%;
+    animation: backdrop-animation 15s ease-in-out infinite;
+}
+
+@keyframes backdrop-animation {
+    0% {
+        background-position: 20% 20%;
+    }
+    25% {
+        background-position: 100% 20%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 20% 100%;
+    }
+    100% {
+        background-position: 20% 20%;
+    }
+}
