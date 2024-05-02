@@ -1,27 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
+.rubik {
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+}
+
+.inter {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+}
+
+
 body {
-    overflow-x: hidden
+  overflow-x: hidden
 }
 
 body::-webkit-scrollbar {
-    width: 1rem;
-    background-color: #ededed; /* Set the scrollbar track color to match the body background */
+  width: 1rem;
+  background-color: #ffb8fa; /* Set the scrollbar track color to match the body background */
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 9999px;
-    background-clip: content-box;
-    background-image: linear-gradient(180deg, #ffafad, #ffb6a3 10%, #ffc29e 20%, #ffce99 30%, #ffdb99 40%, #ffea9e 50%, #dcf0a8 60%, #bdf5c0 70%, #a3f5d8 80%, #91f2ed 90%, #9ef);
+  border-radius: 9999px;
+  background-clip: content-box;
+  background-image: linear-gradient(180deg, #ffafad, #ffb6a3 10%, #ffc29e 20%, #ffce99 30%, #ffdb99 40%, #ffea9e 50%, #dcf0a8 60%, #bdf5c0 70%, #a3f5d8 80%, #91f2ed 90%, #9ef);
 }
 
 ::-webkit-scrollbar-track {
-    display: none;
+  display: none;
 }
 
 ::-webkit-scrollbar-button {
-    display: none;
+  display: none;
 }
