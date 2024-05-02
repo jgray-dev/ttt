@@ -1,7 +1,14 @@
-export default function Home() {
+import Navbar from "../components/Navbar"
+
+const Home = () => {
   return (
-    <div>
-      Home page
+    <div className="home-container">
+      <Navbar />
+      <div className="home-content">
+        <h1>Welcome to Taylor's Home page</h1>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default Home;

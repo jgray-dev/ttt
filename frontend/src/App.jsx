@@ -5,6 +5,10 @@ import {useState, useEffect} from 'react'
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Accounts from "./pages/Accounts.jsx";
+import Guidlines from "/Users/donjuan/Downloads/projects/ttt/frontend/src/pages/Guidelines.jsx";
+import Threads from "./pages/Threads.jsx";
+
+
 
 
 function App() {
@@ -24,20 +28,16 @@ function App() {
     const isMobile = width <= 768;
 
     return (
-        <div>
-            <BrowserRouter>
-                <Backdrop />
-                <Navbar isMobile={isMobile}/>
-                <div className="overflow-hidden">
-                    <Routes>
-                        <Route path="/" element={<Navigate to="/home"/>}/>
-                        <Route path="/home" element={<Home/>}/>
-                        <Route path="/account" element={<Accounts/>}/>
-                    </Routes>
-                </div>
-            </BrowserRouter>
+        <div className = "App">
+            <Home />
+            <Accounts />
+            <Guidlines />
+            <Threads />
+            <Footer />
+            <Navbar />
+            <Search />
         </div>
-        );
-}
 
-export default App
+    );
+}
+    export default App;
