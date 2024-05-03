@@ -25,7 +25,7 @@ class User(db.Model, SerializerMixin):
         self._password_hash = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
 
     def check_password(self, password):
-        saved_bytes = self._password_hash.encode('utf-8')
+        saved_bytes = self._password_hash
         entered_bytes = password.encode('utf-8')
         return bcrypt.checkpw(entered_bytes, saved_bytes)
 
@@ -38,6 +38,7 @@ class Thread(db.Model, SerializerMixin):
     title = db.Column(db.String)  # Title of the thread
     content = db.Column(db.String)  # Content/body of the thread
     time_created = db.Column(db.Integer)  # Int because we'll use unix time for simplicity
+    last_updated = db.Column(db.Integer)  # Int because we'll use unix time for simplicity
 
     posts = relationship('Post', cascade='delete,all',
                          back_populates='thread')  # Set relationship to the posts who fall under this thread

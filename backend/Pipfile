@@ -14,6 +14,7 @@ sqlalchemy = "*"
 sqlalchemy_serializer = "*"
 flask_migrate = "*"
 sqlite-web = "*"
+faker = "*"
 
 [dev-packages]
 
