@@ -1,131 +1,72 @@
 # API Endpoints Documentation
 
-## User Registration
 
-- **Endpoint:** `/api/register`
-- **Method:** POST
-- **Description:** Creates a new user account.
-- **Request Body:**
-  ```json
-  {
-    "username": "example_user",
-    "email": "user@example.com",
-    "password": "password123"
-  }
-- **Response:** User object
-
-## User Login
-
-- **Endpoint:** `/api/login`
-- **Method:** POST
-- **Description:** Authenticates a user and generates an access token.
-- **Request Body:**
-  ```json
-  {
-    "username": "example_user",
-    "password": "password123"
-  }
-- **Response:** Access token
-
-## Get All Threads
+****
+## Threads
+### Get all threads
 
 - **Endpoint:** `/api/threads`
 - **Method:** GET
-- **Description:** Retrieves all threads.
-- **Response:** Array of thread objects
+- **Description:** Gets a list of all threads, for use in home page / search titles, etc.
+- **Response:** List of ALL THREADS (Serialized without rules or post content)
 
-## Create Thread
+****
+### Get specific thread
 
-- **Endpoint:** `/api/threads`
+- **Endpoint:** `/api/thread/<int:id>`
+- **Method:** GET
+- **Description:** Gets a single thread, for use in thread pages/search within thread (through posts)
+- **Response:** Full thread object or 404 error
+
+****
+## Users
+### Get all users
+- **Endpoint:** `/api/users`
+- **Method:** GET
+- **Description:** Gets a list of all users
+- **Response:** List of ALL users (Serialized without post content)
+
+****
+### Get specific user
+- **Endpoint:** `/api/user/<int:id>`
+- **Method:** GET
+- **Description:** Gets a single user, for use in thread pages/search within thread, user pages, etc
+- **Response:** Full user object or 404 error
+
+****
+### Create new user account
+- **Endpoint:** `/api/account/create`
 - **Method:** POST
-- **Description:** Creates a new thread.
+- **Description:** GCreate a new user account. pr
 - **Request Body:**
   ```json
   {
-    "title": "Example Thread",
-    "content": "This is an example thread.",
-    "author_id": 1
+    "username": "username (string)",
+    "email": "email (string)",
+    "password": "unhashed password (string)"
   }
-- **Response:** Thread object
+- **Response:** Full user object or 400 error
 
-## Get Thread by ID
-
-- **Endpoint:** `/api/threads/{thread_id}`
-- **Method:** GET
-- **Description:** Retrieves a specific thread by its ID.
-- **Response:** Thread object
-
-## Update Thread
-
-- **Endpoint:** `/api/threads/{thread_id}`
-- **Method:** PATCH
-- **Description:** Updates a specific thread.
-- **Request Body:**
-  ```json
-  {
-    "title": "Updated Thread Title",
-    "content": "Updated thread content."
-  }
-- **Response:** Updated thread object
-
-## Delete Thread
-
-- **Endpoint:** `/api/threads/{thread_id}`
-- **Method:** DELETE
-- **Description:** Deletes a specific thread.
-- **Response:** Success message
-
-## Create Post
-
-- **Endpoint:** `/api/posts`
+****
+### Sign in
+- **Endpoint:** `/api/account/signin`
 - **Method:** POST
-- **Description:** Creates a new post.
-- **Request Body:**
+- **Description:** Sign into an existing account
+- **Request Body:** `username OR email required`
   ```json
   {
-    "content": "This is a new post.",
-    "thread_id": 1,
-    "author_id": 1
+    "username": "username (string)",
+    "email": "email (string)",
+    "password": "unhashed password (string)"
   }
-- **Response:** Post object
-
-## Get Posts by Thread ID
-
-- **Endpoint:** `/api/threads/{thread_id}/posts`
-- **Method:** GET
-- **Description:** Retrieves all posts for a specific thread.
-- **Response:** Array of post objects
-
-## Get Post by ID
-
-- **Endpoint:** `/api/posts/{post_id}`
-- **Method:** GET
-- **Description:** Retrieves a specific post by its ID.
-- **Response:** Post object
-
-## Update Post
-
-- **Endpoint:** `/api/posts/{post_id}`
-- **Method:** PATCH
-- **Description:** Updates a specific post.
-- **Request Body:**
-  ```json
-  {
-    "content": "Updated post content."
-  }
-- **Response:** Updated post object
-
-## Delete Post
-
-- **Endpoint:** `/api/posts/{post_id}`
-- **Method:** DELETE
-- **Description:** Deletes a specific post.
-- **Response:** Success message
-
-
+- **Response:** Full user object or 400/404 error
 
 ****
 
+meow
+
+
+****
 # Database Schema
 
 ## User Model
