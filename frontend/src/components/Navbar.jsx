@@ -3,7 +3,7 @@ import {FaUserAlt} from "react-icons/fa";
 import Account from "./Account.jsx";
 
 
-export default function Navbar({user}) {
+export default function Navbar({user, setUser}) {
   const [accountOpen, setAccountOpen] = useState(false)
   const [accountPage, setAccountPage] = useState(<></>)
 
@@ -13,7 +13,7 @@ export default function Navbar({user}) {
   }
 
   function showAccount() {
-    setAccountPage(<Account hideAccount={hideAccount}/>);
+    setAccountPage(<Account hideAccount={hideAccount} user={user} setUser={setUser}/>);
     setAccountOpen(true)
   }
 
