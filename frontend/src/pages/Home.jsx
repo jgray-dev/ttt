@@ -8,7 +8,7 @@ export default function Home({threads}) {
       const display = threads.map(thread => {
         return (
           <a href={`/thread/${thread.id}`} key={thread.id}>
-            <div className="w-[80%] md:w-[65%] mx-auto my-4 bg-white/35 rounded-lg h-auto">
+            <div className="w-[95%] md:w-[65%] mx-auto my-4 bg-white/35 rounded-lg h-auto">
               <div className="flex flex-col justify-center">
                 <div className="flex flex-row justify-between px-2 pt-1">
                   <div className="pr-2">
