@@ -3,18 +3,22 @@ import {FaUserAlt} from "react-icons/fa";
 import Account from "./Account.jsx";
 
 
-export default function Navbar() {
-  const user = "astro"
+export default function Navbar({user}) {
   const [accountOpen, setAccountOpen] = useState(false)
   const [accountPage, setAccountPage] = useState(<></>)
 
+  function hideAccount() {
+    setAccountPage(null);
+    setAccountOpen(false)
+  }
+
+  function showAccount() {
+    setAccountPage(<Account hideAccount={hideAccount}/>);
+    setAccountOpen(true)
+  }
+
   function handleClick() {
-    if (accountOpen) { // Clicked on account button again.. Hide page
-      setAccountPage(<></>)
-    } else {
-      setAccountPage(<Account/>)
-    }
-    setAccountOpen(!accountOpen)
+    accountOpen ? hideAccount() : showAccount()
   }
 
   const handleLogin = () => {
@@ -28,7 +32,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="fixed h-screen w-screen">
+    <div className="fixed h-screen w-screen select-none">
       <div className="fixed top-0 w-full h-16 bg-black/50 flex justify-between items-center px-4">
         <a href="/home">
           <img
