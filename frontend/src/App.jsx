@@ -33,7 +33,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="/home" element={<Home threads={threads}/>}/>
-            <Route path="/account" element={<Accounts/>}/>
             <Route path="/guidelines" element={<Guidelines/>}/>
             <Route element={
               <div>

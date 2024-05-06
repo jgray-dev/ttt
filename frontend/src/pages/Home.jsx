@@ -8,24 +8,22 @@ export default function Home({threads}) {
       const display = threads.map(thread => {
         return (
           <a href={`/thread/${thread.id}`} key={thread.id}>
-            <div className="w-[80%] md:w-[65%] mx-auto my-4 bg-white/35 rounded-lg h-16">
-
+            <div className="w-[80%] md:w-[65%] mx-auto my-4 bg-white/35 rounded-lg h-auto">
               <div className="flex flex-col justify-center">
-
                 <div className="flex flex-row justify-between px-2 pt-1">
-                  <div>
+                  <div className="pr-2">
                     {thread.title} TITLE
                   </div>
-                  <div>
+                  <div className="pl-2 text-right w-[100%] bg-red-400">
                     {getTime(thread.last_updated)} ago
                   </div>
                 </div>
-                <div className="flex flex-row justify-between px-2 pb-1">
-                  <div>
+                <div className="flex flex-row justify-between px-2 pt-4">
+                  <div className="pr-2">
                     {thread.id} this is the threads ID
                   </div>
-                  <div>
-                    {thread.author} this is the threads author
+                  <div className="pl-2 text-right">
+                    {thread.author_id} this is the author ID
                   </div>
                 </div>
               </div>
