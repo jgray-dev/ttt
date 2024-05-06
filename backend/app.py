@@ -92,7 +92,10 @@ def user_signin():
 
 @app.route('/api/checksession')
 def get_session():
-    return {"session:": session['user']}
+    if "user" in session:
+        return {"session:": session['user']}
+    else:
+        return {"message": "session not found"}, 200
 
 
 if __name__ == '__main__':

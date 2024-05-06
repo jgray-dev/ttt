@@ -4,7 +4,6 @@ import Navbar from './components/Navbar.jsx'
 import {useState, useEffect} from 'react'
 import {BrowserRouter, Link, Navigate, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.jsx";
-import Accounts from "./pages/Accounts.jsx";
 import Guidelines from "./pages/Guidelines.jsx";
 import Thread from "./pages/Thread.jsx";
 
@@ -12,9 +11,14 @@ export const url = 'http://67.164.191.36:4000/api'
 
 function App() {
   const [threads, setThreads] = useState()
+  const [user, setUser] = useState()
+
 
   useEffect(() => {
-    console.log(`${url}/threads`);
+    fetch(`${url}/checksession`)
+      .then(r => r.json())
+      .then(resp => console.log(resp))
+
     fetch(`${url}/threads`)
       .then(r => r.json())
       .then(data => {
