@@ -33,7 +33,7 @@ function App() {
       <BrowserRouter>
         <Backdrop/>
         <div className="fixed top-16 w-full h-full bg-black/25">
-          <Navbar/>
+          <Navbar user={user}/>
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="/home" element={<Home threads={threads}/>}/>
