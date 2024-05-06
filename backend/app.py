@@ -74,8 +74,6 @@ def create_user():
 def user_signin():
     if "password" in request.json:
         user = None
-        if "email" in request.json:
-            user = User.query.filter(User.email == request.json['email']).first()
         if "username" in request.json:
             user = User.query.filter(User.username == request.json['username']).first()
         if user:
@@ -92,7 +90,10 @@ def user_signin():
 
 @app.route('/api/checksession')
 def get_session():
-    return {"session:": session['user']}
+    if "user" in session:
+        return {"user": session['user']}
+    else:
+        return {"message": "session not found"}, 400
 
 
 if __name__ == '__main__':
