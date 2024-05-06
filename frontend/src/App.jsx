@@ -17,7 +17,13 @@ function App() {
   useEffect(() => {
     fetch(`${url}/checksession`)
       .then(r => r.json())
-      .then(resp => console.log(resp))
+      .then(resp => {
+        if (resp.ok) {
+          setUser(response['user'])
+        } else {
+          console.log("NOT OK CS")
+        }
+      })
 
     fetch(`${url}/threads`)
       .then(r => r.json())
@@ -33,7 +39,7 @@ function App() {
       <BrowserRouter>
         <Backdrop/>
         <div className="fixed top-16 w-full h-full bg-black/25">
-          <Navbar user={user}/>
+          <Navbar user={user} setUser={setUser}/>
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="/home" element={<Home threads={threads}/>}/>
