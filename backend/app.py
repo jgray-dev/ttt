@@ -72,30 +72,27 @@ def create_user():
 
 @app.route('/api/account/signin', methods=['POST'])
 def user_signin():
-    if "username" in request.json or "email" in request.json:
-        if "password" in request.json:
-            user = None
+    if "password" in request.json:
+        user = None
+        if "email" in request.json:
             user = User.query.filter(User.email == request.json['email']).first()
-            if not user:
-                user = User.query.filter(User.username == request.json['username']).first()
-            if user:
-                if user.check_password(request.json['password']):
-                    return {"message": "sign in here"}, 200
-                    session['id'] = user.id
-                else:
-                    return {"error": "password not correct"}
+        if "username" in request.json:
+            user = User.query.filter(User.username == request.json['username']).first()
+        if user:
+            if user.check_password(request.json['password']):
+                session['user'] = user.to_dict()
+                return {"message": "signed in successfully"}, 200
             else:
-                return {"error": "Account not found"}, 404
+                return {"error": "password not correct"}
         else:
-            return {"error": "Password not in request"}, 400
+            return {"error": "Account not found"}, 404
     else:
-        return {"error": "Required data not in request"}, 400
+        return {"error": "Password not in request"}, 400
 
 
 @app.route('/api/checksession')
 def get_session():
-    print(session['id'])
-    return {}
+    return {"session:": session['user']}
 
 
 if __name__ == '__main__':

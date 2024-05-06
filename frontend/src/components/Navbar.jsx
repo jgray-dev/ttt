@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
-
+import {useState} from "react";
+import {BrowserView, MobileView, isBrowser, isMobile} from 'react-device-detect';
 
 
 export default function Navbar() {
@@ -17,25 +16,23 @@ export default function Navbar() {
   };
 
   return (
-    <div className="fixed top-0 w-full h-16 bg-white bg-opacity-50 flex justify-between items-center px-4">
-      <BrowserView>
-      <img
-        src={`https://mynameisnt.kim/uploads/images/ttt.png`}
-        alt="logo"
-        height="80"
-        width="350"
-        className="ml-1"
-      />
-      </BrowserView>
-      <MobileView>
-      <img
-        src={`https://mynameisnt.kim/uploads/images/ttt_mobile.png`}
-        alt="logo"
-        height="80"
-        width="350"
-        className="m-1.5"
-      />
-      </MobileView>
+    <div className="fixed top-0 w-full h-16 bg-black/50 flex justify-between items-center px-4">
+      <a href="/home">
+        <img
+          src={`https://mynameisnt.kim/uploads/images/ttt.png`}
+          alt="logo"
+          height="80"
+          width="350"
+          className="ml-1 md:block hidden"
+        />
+        <img
+          src={`https://mynameisnt.kim/uploads/images/ttt_mobile.png`}
+          alt="logo"
+          height="80"
+          width="40"
+          className="m-1.5 md:hidden block"
+        />
+      </a>
       <div>
         {isLoggedIn ? (
           <button
@@ -64,7 +61,6 @@ export default function Navbar() {
     </div>
   );
 }
-
 
 
 // Kaleab edit with sign in button added
