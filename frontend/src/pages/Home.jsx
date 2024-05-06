@@ -22,10 +22,10 @@ export default function Home({threads}) {
                 </div>
                 <div className="flex flex-row justify-between px-2 pb-1">
                   <div>
-                    {thread.title} TITLE
+                    {thread.id} this is the threads ID
                   </div>
                   <div>
-                    {getTime(thread.last_updated)} ago
+                    {thread.author} this is the threads author
                   </div>
                 </div>
               </div>
