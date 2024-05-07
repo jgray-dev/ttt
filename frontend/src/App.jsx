@@ -11,28 +11,32 @@ export const url = 'http://67.164.191.36:4000/api'
 
 function App() {
   const [threads, setThreads] = useState()
-  const [user, setUser] = useState()
+  const [user, updateUser] = useState()
 
+  function setUser(newUser) {
+    updateUser(newUser)
+  }
 
   useEffect(() => {
     fetch(`${url}/checksession`)
       .then(r => r.json())
       .then(resp => {
         if (resp.ok) {
-          setUser(response['user'])
+          console.log("CS: ", resp)
+          setUser(resp['user'])
         } else {
-          console.log("NOT OK CS")
+//          console.log("NOT OK CS")
         }
       })
 
     fetch(`${url}/threads`)
       .then(r => r.json())
       .then(data => {
-        console.log(data);
         const sortedThreads = data.sort((a, b) => b.last_updated - a.last_updated);
         setThreads(sortedThreads);
       });
   }, []);
+
 
   return (
     <div className="w-screen h-screen text-black">

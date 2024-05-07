@@ -72,7 +72,6 @@ export default function Home({threads}) {
 
   return (
     <div className="home-container">
-      <Navbar/>
       <div className="overflow-y-auto">
         <h1>Welcome to Taylor's Home page</h1>
         {cards}

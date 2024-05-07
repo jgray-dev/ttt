@@ -7,10 +7,12 @@ export default function Navbar({user, setUser}) {
   const [accountOpen, setAccountOpen] = useState(false)
   const [accountPage, setAccountPage] = useState(<></>)
 
+
   function hideAccount() {
     setAccountPage(null);
     setAccountOpen(false)
   }
+
 
   function showAccount() {
     setAccountPage(<Account hideAccount={hideAccount} user={user} setUser={setUser}/>);
@@ -21,18 +23,8 @@ export default function Navbar({user, setUser}) {
     accountOpen ? hideAccount() : showAccount()
   }
 
-  const handleLogin = () => {
-    // Add login logic here, e.g., redirect to a login page or show a modal
-    console.log("Login clicked");
-  };
-
-  const handleSignup = () => {
-    // Add signup logic here, e.g., redirect to a signup page or show a modal
-    console.log("Signup clicked");
-  };
-
   return (
-    <div className="fixed h-screen w-screen select-none">
+    <div className="fixed w-screen select-none">
       <div className="fixed top-0 w-full h-16 bg-black/50 flex justify-between items-center px-4">
         <a href="/home">
           <img
