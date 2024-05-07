@@ -7,7 +7,7 @@ import Home from "./pages/Home.jsx";
 import Guidelines from "./pages/Guidelines.jsx";
 import Thread from "./pages/Thread.jsx";
 
-export const url = 'http://67.164.191.36:4000/api'
+export const url = 'http://localhost:4000/api'
 
 function App() {
   const [threads, setThreads] = useState()
@@ -18,14 +18,14 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(`${url}/checksession`)
+    fetch(`/checksession`)
       .then(r => r.json())
       .then(resp => {
         if (resp.ok) {
           console.log("CS: ", resp)
           setUser(resp['user'])
         } else {
-//          console.log("NOT OK CS")
+          console.log("NOT OK CS")
         }
       })
 
@@ -39,14 +39,14 @@ function App() {
 
 
   return (
-    <div className="w-screen h-screen text-black">
+    <div className="">
       <BrowserRouter>
         <Backdrop/>
         <div className="fixed top-16 w-full h-full bg-black/25">
           <Navbar user={user} setUser={setUser}/>
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
-            <Route path="/home" element={<Home threads={threads}/>}/>
+            <Route path="/home" element={<Home threads={threads} user={user}/>}/>
             <Route path="/guidelines" element={<Guidelines/>}/>
             <Route element={
               <div>

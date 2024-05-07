@@ -24,5 +24,7 @@ dist-ssr
 *.sw?
 
 
-backend/instance
+backend/instance/
 backend/.env
+.fleet/
+.idea/
