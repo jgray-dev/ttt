@@ -7,7 +7,7 @@ import Home from "./pages/Home.jsx";
 import Guidelines from "./pages/Guidelines.jsx";
 import Thread from "./pages/Thread.jsx";
 
-export const url = 'http://67.164.191.36:4000/api'
+export const url = 'http://localhost:4000/api'
 
 function App() {
   const [threads, setThreads] = useState()
