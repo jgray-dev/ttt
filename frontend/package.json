@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://67.164.191.36:4000/api",
   "scripts": {
     "start": "vite --port 3000 --host",
     "build": "vite build",
