@@ -6,13 +6,20 @@ from flask_migrate import Migrate
 from utilities import *
 
 
-@app.route('/api/threads', methods=['GET'])
-def get_threads():
-    threads = Thread.query.all()
-    if threads:
-        return [thread.to_dict(rules=('-posts', '-content')) for thread in threads]
+@app.route('/api/threads/<int:page>', methods=['GET'])
+def get_threads(page):
+    if page:
+        slice_start = (page - 1) * 25
+        slice_end = page * 25
+
+        threads = Thread.query.order_by(Thread.last_updated.desc()).slice(slice_start, slice_end).all()
+
+        if threads:
+            return [thread.to_dict(rules=('-posts', '-content')) for thread in threads]
+        else:
+            return {"error": "No threads found"}, 404
     else:
-        return {"error": "Thread not found"}, 404
+        return {"error": "Invalid page number"}
 
 
 @app.route('/api/thread/<int:query_id>', methods=['GET'])
