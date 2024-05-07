@@ -18,7 +18,6 @@ function Thread() {
 
   return (
     thread ?
-
       <div className="h-full w-full bg-red-400">
         <h2>{thread.title}</h2>
       </div>
