@@ -39,7 +39,7 @@ function App() {
 
 
   return (
-    <div className="w-screen h-screen text-black">
+    <div className="">
       <BrowserRouter>
         <Backdrop/>
         <div className="fixed top-16 w-full h-full bg-black/25">
