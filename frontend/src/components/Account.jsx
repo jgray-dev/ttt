@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {url} from "../App.jsx";
 
 export default function Account({hideAccount, user, setUser}) {
@@ -26,9 +26,9 @@ export default function Account({hideAccount, user, setUser}) {
       .then(r => r.json())
       .then(resp => {
         console.log(resp)
-        console.log(resp.ok)
-        if (resp.ok) {
+        if (resp.message) {
           setUser(siUsername)
+          hideAccount()
         } else {
           alert(resp.error)
         }
@@ -51,8 +51,9 @@ export default function Account({hideAccount, user, setUser}) {
         })
           .then(r => r.json())
           .then(resp => {
-            if (resp.ok) {
-              console.log(resp)
+            if (resp.id) {
+              setUser(resp.username)
+              hideAccount()
             } else {
               alert(resp.error)
             }
@@ -81,7 +82,7 @@ export default function Account({hideAccount, user, setUser}) {
           </div>
           :
           <div>
-            <div className="bg-black/50 justify-between roudned-lg flex md:flex-row flex-col h-full w-full text-center">
+            <div className="bg-black/50 justify-between roudned-lg flex lg:flex-row flex-col h-full w-full text-center">
               <div className="h-full w-full mr-2">
                 <span className="text-white text-xl">Sign in</span>
                 <div className="flex flex-col">
