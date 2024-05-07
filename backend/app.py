@@ -12,7 +12,7 @@ def get_threads():
     if threads:
         return [thread.to_dict(rules=('-posts', '-content')) for thread in threads]
     else:
-        return {"error", "Thread not found"}, 404
+        return {"error": "Thread not found"}, 404
 
 
 @app.route('/api/thread/<int:query_id>', methods=['GET'])
