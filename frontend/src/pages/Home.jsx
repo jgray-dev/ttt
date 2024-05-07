@@ -1,7 +1,10 @@
 import {useEffect, useState} from "react";
 
-export default function Home({threads}) {
+export default function Home({threads, user}) {
   const [cards, setCards] = useState()
+  if (user) {
+    console.log("User")
+  }
   useEffect(() => {
     if (threads) {
       const display = threads.map(thread => {
