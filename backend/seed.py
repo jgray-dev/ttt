@@ -6,13 +6,15 @@ import random
 fake = Faker()
 
 with app.app_context():
+    print("Deleting old data")
     User.query.delete()
     Thread.query.delete()
     Post.query.delete()
 
     # Create users
+    print("Creating 20 users")
     users = []
-    for _ in range(5):
+    for _ in range(20):
         user = User(
             username=fake.user_name(),
             email=fake.email(),
@@ -23,8 +25,9 @@ with app.app_context():
     db.session.commit()
 
     # Create threads
+    print("Creating 1000 threads")
     threads = []
-    for _ in range(10):
+    for _ in range(1000):
         start_date = fake.date_time_between(start_date='-24h', end_date='now')
         end_date = fake.date_time_between(start_date=start_date, end_date='now')
         author = random.choice(users)  # Select a random user as the author
@@ -40,7 +43,8 @@ with app.app_context():
     db.session.commit()
 
     # Create posts
-    for _ in range(50):
+    print("Creating 500 posts")
+    for _ in range(500):
         post_date = fake.date_time_between(start_date='-1y', end_date='now')
         thread = random.choice(threads)  # Select a random thread for the post
         author = random.choice(users)  # Select a random user as the author
