@@ -25,7 +25,7 @@ with app.app_context():
     # Create threads
     threads = []
     for _ in range(10):
-        start_date = fake.date_time_between(start_date='-1y', end_date='now')
+        start_date = fake.date_time_between(start_date='-24h', end_date='now')
         end_date = fake.date_time_between(start_date=start_date, end_date='now')
         author = random.choice(users)  # Select a random user as the author
         thread = Thread(

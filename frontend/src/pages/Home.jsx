@@ -1,29 +1,31 @@
-import Navbar from "../components/Navbar"
 import {useEffect, useState} from "react";
 
-export default function Home({threads}) {
+export default function Home({threads, user}) {
   const [cards, setCards] = useState()
+  if (user) {
+    console.log("User")
+  }
   useEffect(() => {
     if (threads) {
       const display = threads.map(thread => {
         return (
           <a href={`/thread/${thread.id}`} key={thread.id}>
-            <div className="w-[95%] md:w-[65%] mx-auto my-4 bg-white/35 rounded-lg h-auto">
+            <div className="w-[95%] md:w-[65%] mx-auto my-4 bg-black/35 text-white rounded-lg h-auto">
               <div className="flex flex-col justify-center">
                 <div className="flex flex-row justify-between px-2 pt-1">
-                  <div className="pr-2">
-                    {thread.title} TITLE
+                  <div className="pr-2 font-bold">
+                    {thread.title}
                   </div>
-                  <div className="pl-2 text-right w-[100%] bg-red-400">
+                  <div className="pl-2 text-right w-fit text-nowrap">
                     {getTime(thread.last_updated)} ago
                   </div>
                 </div>
                 <div className="flex flex-row justify-between px-2 pt-4">
                   <div className="pr-2">
-                    {thread.id} this is the threads ID
+                    By {thread.author.username}
                   </div>
                   <div className="pl-2 text-right">
-                    {thread.author_id} this is the author ID
+                    {thread.author_id}
                   </div>
                 </div>
               </div>
@@ -71,9 +73,8 @@ export default function Home({threads}) {
   }
 
   return (
-    <div className="home-container">
-      <div className="overflow-y-auto">
-        <h1>Welcome to Taylor's Home page</h1>
+    <div className="h-[200%]">
+      <div className="h-screen overflow-y-scroll pb-48">
         {cards}
       </div>
     </div>
