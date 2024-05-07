@@ -18,14 +18,14 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(`${url}/checksession`)
+    fetch(`/checksession`)
       .then(r => r.json())
       .then(resp => {
         if (resp.ok) {
           console.log("CS: ", resp)
           setUser(resp['user'])
         } else {
-//          console.log("NOT OK CS")
+          console.log("NOT OK CS")
         }
       })
 
@@ -46,7 +46,7 @@ function App() {
           <Navbar user={user} setUser={setUser}/>
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
-            <Route path="/home" element={<Home threads={threads}/>}/>
+            <Route path="/home" element={<Home threads={threads} user={user}/>}/>
             <Route path="/guidelines" element={<Guidelines/>}/>
             <Route element={
               <div>
