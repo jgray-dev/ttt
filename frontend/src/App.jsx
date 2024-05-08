@@ -49,7 +49,6 @@ function App() {
     updateUser(undefined)
   }
 
-
   return (
     <div className="">
       <BrowserRouter>
