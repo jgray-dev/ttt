@@ -21,7 +21,7 @@ export default function Home({threads, user}) {
       const scrollHeight = div.scrollHeight;
       const clientHeight = div.clientHeight;
 
-      if (scrollTop + clientHeight >= scrollHeight - 250 && !loading) {
+      if (scrollTop + clientHeight >= scrollHeight - 450 && !loading) {
         setLoading(true);
         console.log("Loading more cards")
         getMoreCards(page)
@@ -189,15 +189,16 @@ export default function Home({threads, user}) {
         <div
           className="fixed bg-gradient-to-r from-rose-300/55 via-emerald-100/55 to-orange-300/55 backdrop-blur-sm w-full flex flex-row justify-center">
           <button
-            className="bg-white/60 font-bold text-black border-white border mx-auto my-2 md:my-2 py-1 px-3 rounded-md hover:bg-white/85"
+            className="bg-white/60 font-bold text-zinc-800 hover:text-black border-white border mx-auto my-2 md:my-2 py-1 px-3 rounded-md hover:bg-white/85"
             onClick={() => clickNewThread()}>
             New thread
           </button>
         </div>
-        <div className="pt-12">
+        <div className="pt-12 text-center">
 
           {newThread}
           {cards}
+          End of threads
         </div>
       </div>
     </div>
