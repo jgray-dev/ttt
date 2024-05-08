@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {url} from "../App.jsx";
+import {deleteAllCookies, updateCookie} from "./Functions.js";
 
-export default function Account({hideAccount, user, setUser}) {
+export default function Account({hideAccount, user, setUser, logOut}) {
   const [siUsername, setSiUsername] = useState("")
   const [siPassword, setSiPassword] = useState("")
 
@@ -28,12 +29,14 @@ export default function Account({hideAccount, user, setUser}) {
         console.log(resp)
         if (resp.message) {
           setUser(siUsername)
+          updateCookie(siUsername)
           hideAccount()
         } else {
           alert(resp.error)
         }
       })
   }
+
 
   function signUp() {
     if (suUsername !== "" && suEmail !== "" && suPassword !== "" && suPassword2 !== "") {
@@ -52,6 +55,7 @@ export default function Account({hideAccount, user, setUser}) {
           .then(r => r.json())
           .then(resp => {
             if (resp.id) {
+              updateCookie(resp.username)
               setUser(resp.username)
               hideAccount()
             } else {
@@ -78,7 +82,13 @@ export default function Account({hideAccount, user, setUser}) {
       >
         {user ?
           <div>
-            USER IS SIGNED IN MODIFY ACCOUNT/LOGOUT HERE
+            <button className="bg-blue-400 px-4 py-2" onClick={() => {
+              logOut()
+              hideAccount()
+              deleteAllCookies()
+              alert("Signed out successfully")
+            }}>Log out
+            </button>
           </div>
           :
           <div>
