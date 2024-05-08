@@ -34,6 +34,7 @@ function App() {
 
 
     const cookies = readCookie()
+    console.log("cookies: ", cookies)
     if (cookies.username) {
       setUser(cookies.username)
       setUserId(cookies.id)
