@@ -112,7 +112,7 @@ def user_signin():
         if user:
             if user.check_password(request.json['password']):
                 session['user'] = user.to_dict()
-                return {"message": "signed in successfully"}, 200
+                return user.to_dict(), 200
             else:
                 return {"error": "password not correct"}
         else:
