@@ -13,6 +13,7 @@ export const url = 'http://67.164.191.36:4000/api'
 function App() {
   const [threads, setThreads] = useState()
   const [user, updateUser] = useState()
+  const [userid, setUserId] = useState()
 
   function setUser(newUser) {
     updateUser(newUser)
@@ -34,8 +35,8 @@ function App() {
 
     const cookies = readCookie()
     if (cookies.username) {
-      console.log(cookies.username)
       setUser(cookies.username)
+      setUserId(cookies.id)
     }
 
     fetch(`${url}/threads/1`)
@@ -54,7 +55,7 @@ function App() {
       <BrowserRouter>
         <Backdrop/>
         <div className="fixed top-16 w-full h-full bg-black/25">
-          <Navbar user={user} setUser={setUser} logOut={logOut}/>
+          <Navbar user={user} setUser={setUser} logOut={logOut} userid={userid}/>
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="/home" element={<Home threads={threads} user={user}/>}/>
