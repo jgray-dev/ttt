@@ -73,10 +73,12 @@ export function deleteAllCookies() {
 }
 
 //Sets our cookie
-export function updateCookie(username) {
+export function updateCookie(username, id) {
+  console.log("UPDATE: ", username, id)
   const date = new Date();
   date.setFullYear(date.getFullYear() + 1);
   document.cookie = `username=${username}; SameSite=Strict; Expires=${date.toUTCString()}`;
+  document.cookie = `id=${id}; SameSite=Strict; Expires=${date.toUTCString()}`;
 }
 
 
