@@ -72,7 +72,8 @@ function Thread({user}) {
 
   function formatPosts() {
     return posts.map((post, index) => (
-        <div key={index} className="border border-gray-300 p-4 mb-4 md:mx-10 mx-4 rounded-lg bg-white/25">
+        <div key={index} id={post.time_created}
+             className="border border-gray-300 p-4 mb-4 md:mx-10 mx-4 rounded-lg bg-white/25">
           <h3 className="text-lg font-bold">{post.author.username}</h3>
           <p className="text-sm text-gray-500">{getTime(post.time_created)} ago</p>
           <p className="mt-2">{post.content}</p>
@@ -90,10 +91,15 @@ function Thread({user}) {
   function clickReply() {
     if (replyOpen) {
       hideReply()
+      setReplyOpen(!replyOpen)
     } else {
-      setReply(<Reply hideReply={hideReply} user={user}/>);
+      if (user) {
+        setReply(<Reply hideReply={hideReply} user={user}/>);
+        setReplyOpen(!replyOpen)
+      } else {
+        alert("Please sign in before replying")
+      }
     }
-    setReplyOpen(!replyOpen)
   }
 
   function Reply() {
@@ -102,6 +108,24 @@ function Thread({user}) {
     function handleSubmit() {
       if (content !== "") {
         console.log(content)
+        fetch(`${url}/newpost`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "username": user,
+            "thread_id": id,
+            "content": content
+          })
+        })
+          .then(r => r.json())
+          .then(response => {
+            if (response.id) {
+              hideReply()
+            }
+            console.log(response)
+          })
       } else {
         alert("Please add some content before submitting")
       }
@@ -150,7 +174,7 @@ function Thread({user}) {
     thread ? (
         <div className="h-full w-full overflow-y-scroll pb-36" id="replies" ref={repliesRef}>
           <div
-            className="fixed bg-gradient-to-r from-rose-300/55 via-emerald-100/55 to-orange-300/55 backdrop-blur-sm w-full flex flex-row justify-between">
+            className="fixed z-0 bg-gradient-to-r from-rose-300/55 via-emerald-100/55 to-orange-300/55 backdrop-blur-sm w-full flex flex-row justify-between">
             <div className="text-xl font-bold mx-4 py-4">{thread.title}</div>
             <button
               className="bg-white/60 font-bold text-black border-white border my-6 md:my-2 py-1 px-3 mr-12 rounded-md hover:bg-white/85"
