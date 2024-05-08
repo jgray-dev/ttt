@@ -130,12 +130,12 @@ export default function Home({threads, user}) {
           <div className="font-bold font-xl w-full text-center">Create new thread</div>
           <div className="text-left w-full pt-12">
             Title
-            <input className="w-full bg-white/30 mb-4 rounded-md placeholder-black/50" value={title}
+            <input className="w-full bg-white/30 mb-4 rounded-md placeholder-black/50 p-2" value={title}
                    onChange={(e) => setTitle(e.target.value)}
                    placeholder="Enter title here"/>
             Content
             <textarea
-              className="bg-white/30 resize-none w-full mt-4 placeholder-black/50 rounded-lg p-2" rows={10}
+              className="bg-white/30 resize-none w-full placeholder-black/50 rounded-lg p-2" rows={10}
               placeholder={"Enter content here"}
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -158,8 +158,8 @@ export default function Home({threads, user}) {
   function getCards(threads) {
     return threads.map(thread => {
       return (
-        <a href={`/thread/${thread.id}`} key={thread.id}>
-          <div className="w-[95%] md:w-[65%] mx-auto my-4 bg-black/35 text-white rounded-lg h-auto">
+        <div className="w-[95%] md:w-[65%] mx-auto my-4 bg-white/15 text-white rounded-lg h-auto" key={thread.id}>
+          <a href={`/thread/${thread.id}`}>
             <div className="flex flex-col justify-center">
               <div className="flex flex-row justify-between px-2 pt-1">
                 <div className="pr-2 font-bold">
@@ -170,14 +170,14 @@ export default function Home({threads, user}) {
                 </div>
               </div>
               <div className="flex flex-row justify-between px-2 pt-4">
-                <div className="pr-2">
+                <div className="pr-2 text-zinc-300">
                   By {thread.author.username}
                 </div>
               </div>
             </div>
             <br/>
-          </div>
-        </a>
+          </a>
+        </div>
       )
     })
   }
@@ -189,7 +189,7 @@ export default function Home({threads, user}) {
         <div
           className="fixed bg-gradient-to-r from-rose-300/55 via-emerald-100/55 to-orange-300/55 backdrop-blur-sm w-full flex flex-row justify-center">
           <button
-            className="bg-white/60 font-bold text-black border-white border my-2 md:my-2 py-1 px-3 mr-12 rounded-md hover:bg-white/85"
+            className="bg-white/60 font-bold text-black border-white border mx-auto my-2 md:my-2 py-1 px-3 rounded-md hover:bg-white/85"
             onClick={() => clickNewThread()}>
             New thread
           </button>
