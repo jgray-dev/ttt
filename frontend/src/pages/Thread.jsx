@@ -166,7 +166,6 @@ function Thread({user}) {
               submit
             </button>
           </div>
-
         </div>
       </div>
     );
