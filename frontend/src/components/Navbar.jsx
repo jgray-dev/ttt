@@ -19,7 +19,7 @@ export default function Navbar({user, setUser}) {
     setAccountOpen(true)
   }
 
-  function handleClick() {
+  function handleAccountClick() {
     accountOpen ? hideAccount() : showAccount()
   }
 
@@ -44,9 +44,9 @@ export default function Navbar({user, setUser}) {
         </a>
         <div className="cursor-pointer p-4"
              onClick={() => {
-               handleClick()
+               handleAccountClick()
              }}>
-          <FaUserAlt className={"fill-white h-6 w-6"}/>
+          <FaUserAlt className={`${user ? "fill-white" : "fill-red-400"} h-6 w-6`}/>
         </div>
       </div>
       {accountPage}
