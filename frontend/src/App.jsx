@@ -6,45 +6,57 @@ import {BrowserRouter, Link, Navigate, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Guidelines from "./pages/Guidelines.jsx";
 import Thread from "./pages/Thread.jsx";
+import {readCookie} from "./components/Functions.js";
 
 export const url = 'http://67.164.191.36:4000/api'
 
 function App() {
   const [threads, setThreads] = useState()
-  const [pageNumber, setPageNumber] = useState(1)
   const [user, updateUser] = useState()
+  const [userid, setUserId] = useState()
 
   function setUser(newUser) {
     updateUser(newUser)
   }
 
   useEffect(() => {
-    fetch(`${url}/checksession`)
-      .then(r => r.json())
-      .then(resp => {
-        if (resp.ok) {
-          console.log("CS: ", resp)
-          setUser(resp['user'])
-        } else {
-          console.log("NOT OK CS")
-        }
-      })
+//    Sessions wont work on Vite/home backend server. Using cookies as alternative
+//    fetch(`${url}/checksession`)
+//      .then(r => r.json())
+//      .then(resp => {
+//        if (resp.ok) {
+//          console.log("CS: ", resp)
+//          setUser(resp['user'])
+//        } else {
+//          console.log("NOT OK CS")
+//        }
+//      })
 
-    fetch(`${url}/threads/${pageNumber}`)
+
+    const cookies = readCookie()
+    console.log("cookies: ", cookies)
+    if (cookies.username) {
+      setUser(cookies.username)
+      setUserId(cookies.id)
+    }
+
+    fetch(`${url}/threads/1`)
       .then(r => r.json())
       .then(data => {
-        const sortedThreads = data.sort((a, b) => b.last_updated - a.last_updated);
-        setThreads(sortedThreads);
+        setThreads(data);
       });
   }, []);
 
+  function logOut() {
+    updateUser(undefined)
+  }
 
   return (
     <div className="">
       <BrowserRouter>
         <Backdrop/>
         <div className="fixed top-16 w-full h-full bg-black/25">
-          <Navbar user={user} setUser={setUser}/>
+          <Navbar user={user} setUser={setUser} logOut={logOut} userid={userid}/>
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="/home" element={<Home threads={threads} user={user}/>}/>
@@ -56,7 +68,7 @@ function App() {
                 )) : <></>}
               </div>
             }/>
-            <Route path="/thread/:id" element={<Thread/>}/>
+            <Route path="/thread/:id" element={<Thread user={user}/>}/>
           </Routes>
         </div>
       </BrowserRouter>

@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {url} from "../App.jsx";
+import {deleteAllCookies, updateCookie} from "./Functions.js";
 
-export default function Account({hideAccount, user, setUser}) {
+export default function Account({hideAccount, user, setUser, logOut, userid}) {
   const [siUsername, setSiUsername] = useState("")
   const [siPassword, setSiPassword] = useState("")
 
@@ -10,10 +11,15 @@ export default function Account({hideAccount, user, setUser}) {
   const [suPassword, setSuPassword] = useState("")
   const [suPassword2, setSuPassword2] = useState("")
 
+  const [oldPw, setOldPw] = useState("")
+  const [newPw, setNewPw] = useState("")
+  const [newPw2, setNewPw2] = useState("")
+
+  const [dPw, setDPw] = useState("")
 
   function signIn() {
     console.log(siUsername, siPassword)
-    fetch(`/account/signin`, {
+    fetch(`${url}/account/signin`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -26,14 +32,17 @@ export default function Account({hideAccount, user, setUser}) {
       .then(r => r.json())
       .then(resp => {
         console.log(resp)
-        if (resp.message) {
+        if (!resp.error) {
+          console.log(resp)
           setUser(siUsername)
+          updateCookie(resp.username, resp.id)
           hideAccount()
         } else {
           alert(resp.error)
         }
       })
   }
+
 
   function signUp() {
     if (suUsername !== "" && suEmail !== "" && suPassword !== "" && suPassword2 !== "") {
@@ -52,6 +61,7 @@ export default function Account({hideAccount, user, setUser}) {
           .then(r => r.json())
           .then(resp => {
             if (resp.id) {
+              updateCookie(resp.username, resp.id)
               setUser(resp.username)
               hideAccount()
             } else {
@@ -64,26 +74,134 @@ export default function Account({hideAccount, user, setUser}) {
     }
   }
 
+  function changePassword() {
+    if (oldPw !== "" && newPw !== "" && newPw2 !== "") {
+      if (newPw === newPw2) {
+        fetch(`${url}/account/changepassword`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "oldPassword": oldPw,
+            "newPassword": newPw,
+            "userId": userid
+          })
+        })
+          .then(r => r.json())
+          .then(resp => {
+            if (!resp.error) {
+              alert("Password changed successfully")
+            } else {
+              alert(resp.error)
+            }
+          })
+      } else {
+        alert("New passwords do not match")
+      }
+    } else {
+      alert("Please fill in all fields before submitting")
+    }
+  }
+
+  function deleteAccount() {
+    if (dPw !== "") {
+      fetch(`${url}/account/delete`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "password": dPw,
+          "userId": userid
+        })
+      })
+        .then(r => r.json())
+        .then(resp => {
+          console.log(resp)
+          if (!resp.error) {
+            deleteAllCookies()
+            logOut()
+            hideAccount()
+            alert("Account deleted successfully")
+          } else {
+            alert(resp.error)
+          }
+        })
+    } else {
+      alert("Please fill in all fields before submitting")
+    }
+  }
 
   return (
-    <div className={`fixed w-full h-full bg-black/30 text-white`}
+    <div className={`fixed w-screen h-screen bg-black/30 backdrop-blur-sm text-white z-50`}
          onClick={() => {
            hideAccount()
          }}>
       <div
-        className="mt-12 h-[80%]  w-[95%] sm:w-[80%] bg-black/90 mx-auto rounded-3xl p-3"
+        className="mt-24 h-fit w-[95%] sm:w-[80%] bg-black/30 mx-auto rounded-3xl p-3 z-50"
         onClick={(event) => {
           event.stopPropagation();
         }}
       >
         {user ?
+
           <div>
-            USER IS SIGNED IN MODIFY ACCOUNT/LOGOUT HERE
+            <div className="w-full p-4">
+              <div className={"text-xl font-bold text-white my-3"}>Currently signed in as {user} {userid}</div>
+              <div className="flex md:flex-row flex-col my-6">
+                <div className={"w-full my-2"}>
+                  <div className={"w-full text-center font-bold"}>Change password</div>
+                  <div className={"text-white"}>
+
+                    <div>Old password:</div>
+                    <div><input type="password" className="p-1 placeholder-black/30 text-black rounded-md"
+                                placeholder="Old password" value={oldPw} onChange={(e) => setOldPw(e.target.value)}/>
+                    </div>
+                    <div>New password:</div>
+                    <div><input type="password" className="p-1 placeholder-black/30 text-black rounded-md"
+                                placeholder="New password" value={newPw} onChange={(e) => setNewPw(e.target.value)}/>
+                    </div>
+                    <div>Confirm new password:</div>
+                    <div><input type="password" className="p-1 placeholder-black/30 text-black rounded-md"
+                                placeholder="Confirm new password" value={newPw2}
+                                onChange={(e) => setNewPw2(e.target.value)}/>
+                    </div>
+                    <button className={"bg-black/50 rounded-md px-4 py-2 mt-4"}
+                            onClick={() => changePassword()}> Change password
+                    </button>
+                  </div>
+                </div>
+                <div className={"w-full  my-2"}>
+                  <div className={"w-full text-center font-bold"}>Delete account</div>
+                  <div>Account password:</div>
+                  <div><input type="password" className="p-1 placeholder-black/30 text-black rounded-md"
+                              placeholder="Account password" value={dPw}
+                              onChange={(e) => setDPw(e.target.value)}/>
+                  </div>
+                  <button className={"bg-black/50 rounded-md px-4 py-2 mt-4"}
+                          onClick={() => deleteAccount()}> Delete account
+                  </button>
+                </div>
+
+              </div>
+
+              <button className="bg-red-400 px-4 py-2 rounded-md" onClick={() => {
+                logOut()
+                hideAccount()
+                deleteAllCookies()
+                alert("Signed out successfully")
+              }}>Log out
+              </button>
+            </div>
           </div>
+
           :
+
           <div>
-            <div className="bg-black/50 justify-between roudned-lg flex lg:flex-row flex-col h-full w-full text-center">
-              <div className="h-full w-full mr-2">
+            <div
+              className="bg-black/50 rounded-md p-4 justify-between roudned-lg flex lg:flex-row flex-col h-full w-full text-center">
+              <div className="h-full w-full mr-2 py-8">
                 <span className="text-white text-xl">Sign in</span>
                 <div className="flex flex-col">
                   <div>
@@ -110,10 +228,11 @@ export default function Account({hideAccount, user, setUser}) {
                       </div>
                     </div>
                   </div>
-                  <button className="bg-sky-300 mx-auto px-4 py-2 rounded-lg" onClick={() => signIn()}>Sign In</button>
+                  <button className="bg-sky-300 mx-auto px-4 py-2 rounded-lg" onClick={() => signIn()}>Sign In
+                  </button>
                 </div>
               </div>
-              <div className="h-full w-full md:ml-2 md:mt-0 mt-4">
+              <div className="h-full w-full md:ml-2 my-8">
                 <span className="text-white text-xl">Sign up</span>
 
 
@@ -163,7 +282,8 @@ export default function Account({hideAccount, user, setUser}) {
                       </div>
                     </div>
                   </div>
-                  <button className="bg-sky-300 mx-auto px-4 py-2 rounded-lg" onClick={() => signUp()}>Sign Up</button>
+                  <button className="bg-sky-300 mx-auto px-4 py-2 rounded-lg" onClick={() => signUp()}>Sign Up
+                  </button>
                 </div>
               </div>
             </div>

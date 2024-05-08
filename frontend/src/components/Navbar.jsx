@@ -3,7 +3,7 @@ import {FaUserAlt} from "react-icons/fa";
 import Account from "./Account.jsx";
 
 
-export default function Navbar({user, setUser}) {
+export default function Navbar({user, setUser, logOut, userid}) {
   const [accountOpen, setAccountOpen] = useState(false)
   const [accountPage, setAccountPage] = useState(<></>)
 
@@ -15,11 +15,11 @@ export default function Navbar({user, setUser}) {
 
 
   function showAccount() {
-    setAccountPage(<Account hideAccount={hideAccount} user={user} setUser={setUser}/>);
+    setAccountPage(<Account hideAccount={hideAccount} user={user} setUser={setUser} logOut={logOut} userid={userid}/>);
     setAccountOpen(true)
   }
 
-  function handleClick() {
+  function handleAccountClick() {
     accountOpen ? hideAccount() : showAccount()
   }
 
@@ -44,9 +44,9 @@ export default function Navbar({user, setUser}) {
         </a>
         <div className="cursor-pointer p-4"
              onClick={() => {
-               handleClick()
+               handleAccountClick()
              }}>
-          <FaUserAlt className={"fill-white h-6 w-6"}/>
+          <FaUserAlt className={`${user ? "fill-white" : "fill-red-400"} h-6 w-6`}/>
         </div>
       </div>
       {accountPage}

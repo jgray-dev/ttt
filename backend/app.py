@@ -4,6 +4,7 @@ import os
 from database import *
 from flask_migrate import Migrate
 from utilities import *
+import time
 
 
 @app.route('/api/threads/<int:page>', methods=['GET'])
@@ -43,7 +44,7 @@ def get_posts(thread_id, page):
         thread = Thread.query.get(thread_id)
         if thread:
             posts = Post.query.filter_by(thread_id=thread_id) \
-                .order_by(Post.time_created.desc()) \
+                .order_by(Post.time_created.asc()) \
                 .slice(slice_start, slice_end) \
                 .all()
             if posts:
@@ -111,7 +112,7 @@ def user_signin():
         if user:
             if user.check_password(request.json['password']):
                 session['user'] = user.to_dict()
-                return {"message": "signed in successfully"}, 200
+                return user.to_dict(), 200
             else:
                 return {"error": "password not correct"}
         else:
@@ -128,7 +129,91 @@ def get_session():
         return {"message": "session not found"}, 400
 
 
+@app.route('/api/newpost', methods=['POST'])
+def new_post():
+    if "username" in request.json:
+        if "thread_id" in request.json:
+            if "content" in request.json:
+                user = User.query.filter(User.username == request.json['username']).first()
+                if user:
+                    thread = Thread.query.filter(Thread.id == request.json['thread_id']).first()
+                    if thread:
+                        thread.last_updated = int(time.time())
+                        newpost = Post(content=request.json['content'], time_created=int(time.time()),
+                                       thread_id=thread.id, author_id=user.id, author=user, thread=thread)
+                        db.session.add(newpost)
+                        db.session.add(thread)
+                        db.session.commit()
+                        return newpost.to_dict()
+                    else:
+                        return {"error": "Thread not found"}, 404
+                else:
+                    return {"error": "User not found"}, 404
+            else:
+                return {"error": "No username in request"}, 400
+        else:
+            return {"error": "No thread id in request"}, 400
+    else:
+        return {"error": "No username in request"}, 400
+
+
+@app.route('/api/newthread', methods=['POST'])
+def new_thread():
+    if "username" in request.json:
+        if "title" in request.json:
+            if "content" in request.json:
+                user = User.query.filter(User.username == request.json['username']).first()
+                if user:
+                    newthread = Thread(author_id=user.id, title=request.json['title'],
+                                       content=request.json['content'], time_created=int(time.time()),
+                                       last_updated=int(time.time()))
+                    db.session.add(newthread)
+                    db.session.commit()
+                    return newthread.to_dict()
+                else:
+                    return {"error": "User not found"}, 404
+            else:
+                return {"error": "No username in request"}, 400
+        else:
+            return {"error": "No thread id in request"}, 400
+    else:
+        return {"error": "No username in request"}, 400
+
+
+@app.route('/api/account/changepassword', methods=['POST'])
+def account_changepassword():
+    print(request.json['userId'])
+    if "oldPassword" in request.json and "newPassword" in request.json and "userId" in request.json:
+        user = User.query.filter(User.id == request.json['userId']).first()
+        if user:
+            if user.check_password(request.json['oldPassword']):
+                user.password_hash = request.json['newPassword']
+                db.session.commit()
+                return {"message": "Password changed successfully"}, 200
+            else:
+                return {"error": "Incorrect password"}, 400
+        else:
+            return {"error": "User not found"}, 404
+    else:
+        return {"error": "Incorrect parameters"}, 400
+
+
+@app.route('/api/account/delete', methods=['POST'])
+def account_delete():
+    if "password" in request.json and "userId" in request.json:
+        user = User.query.filter(User.id == request.json['userId']).first()
+        if user:
+            if user.check_password(request.json['password']):
+                db.session.delete(user)
+                db.session.commit()
+                return {"message": "Account deleted successfully"}, 200
+            else:
+                return {"error": "Incorrect password"}, 400
+        else:
+            return {"error": "User not found"}, 404
+    else:
+        return {"error": "Incorrect parameters"}, 400
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000, debug=True)
-
-# test for merge from jackson branch

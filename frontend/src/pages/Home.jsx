@@ -1,15 +1,18 @@
 import {useEffect, useState} from "react";
 import {url} from "../App.jsx";
+import {getTime} from "../components/Functions.js";
+import {IoIosCloseCircleOutline} from "react-icons/io";
+import {useNavigate} from "react-router-dom";
 
 export default function Home({threads, user}) {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   let totalThreads = threads;
   const [cards, setCards] = useState();
+  const [newThreadOpen, setNewThreadOpen] = useState(false)
+  const [newThread, setNewThread] = useState(<></>)
 
-  if (user) {
-    console.log("User");
-  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,7 +21,7 @@ export default function Home({threads, user}) {
       const scrollHeight = div.scrollHeight;
       const clientHeight = div.clientHeight;
 
-      if (scrollTop + clientHeight >= scrollHeight - 250 && !loading) {
+      if (scrollTop + clientHeight >= scrollHeight - 450 && !loading) {
         setLoading(true);
         console.log("Loading more cards")
         getMoreCards(page)
@@ -54,11 +57,109 @@ export default function Home({threads, user}) {
   }, [threads])
 
 
+  function hideNewThread() {
+    setNewThreadOpen(false)
+    setNewThread(<></>)
+
+  }
+
+  function clickNewThread() {
+    console.log(newThreadOpen)
+    if (newThreadOpen) {
+      hideNewThread()
+    } else {
+      if (user) {
+        setNewThread(<NewThread/>)
+        setNewThreadOpen(true)
+
+      } else {
+        alert("Please sign in before creating a new thread")
+      }
+    }
+  }
+
+  function NewThread() {
+    const [content, setContent] = useState("");
+    const [title, setTitle] = useState("");
+
+    function handleSubmit() {
+      if (content !== "") {
+        console.log(content)
+        fetch(`${url}/newthread`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "username": user,
+            "content": content,
+            "title": title
+          })
+        })
+          .then(r => r.json())
+          .then(response => {
+            console.log(response)
+            if (response.id) {
+              hideNewThread()
+              navigate(`/thread/${response.id}`)
+            }
+            console.log(response)
+          })
+      } else {
+        alert("Please add some content before submitting")
+      }
+    }
+
+    return (
+      <div
+        className="h-screen w-screen fixed backdrop-blur-md top-0 left-0"
+        onClick={() => {
+          hideNewThread()
+        }}
+      >
+        <div
+          className="mt-12 sm:w-[80%] bg-rose-100/80 mx-auto rounded-3xl p-3 h-fit"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <div className="w-full text-right">
+            <IoIosCloseCircleOutline className={"h-8 w-8 fill-red-500 hover:fill-red-400 ml-auto"}
+                                     onClick={() => hideNewThread()}/>
+          </div>
+          <div className="font-bold font-xl w-full text-center">Create new thread</div>
+          <div className="text-left w-full pt-12">
+            Title
+            <input className="w-full bg-white/30 mb-4 rounded-md placeholder-black/50 p-2" value={title}
+                   onChange={(e) => setTitle(e.target.value)}
+                   placeholder="Enter title here"/>
+            Content
+            <textarea
+              className="bg-white/30 resize-none w-full placeholder-black/50 rounded-lg p-2" rows={10}
+              placeholder={"Enter content here"}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            >
+
+              </textarea>
+            <button
+              className="bg-gradient-to-br text-zinc-200 font-bold from-blue-400 hover:from-sky-400 hover:to-emerald-400 hover:text-white to-green-400 py-2 px-4 rounded-lg"
+              onClick={() => handleSubmit()}>
+              submit
+            </button>
+          </div>
+
+        </div>
+      </div>
+    );
+
+  }
+
   function getCards(threads) {
     return threads.map(thread => {
       return (
-        <a href={`/thread/${thread.id}`} key={thread.id}>
-          <div className="w-[95%] md:w-[65%] mx-auto my-4 bg-black/35 text-white rounded-lg h-auto">
+        <div className="w-[95%] md:w-[65%] mx-auto my-4 bg-white/15 text-white rounded-lg h-auto" key={thread.id}>
+          <a href={`/thread/${thread.id}`}>
             <div className="flex flex-col justify-center">
               <div className="flex flex-row justify-between px-2 pt-1">
                 <div className="pr-2 font-bold">
@@ -69,59 +170,36 @@ export default function Home({threads, user}) {
                 </div>
               </div>
               <div className="flex flex-row justify-between px-2 pt-4">
-                <div className="pr-2">
+                <div className="pr-2 text-zinc-300">
                   By {thread.author.username}
-                </div>
-                <div className="pl-2 text-right">
-                  {thread.id}
                 </div>
               </div>
             </div>
             <br/>
-          </div>
-        </a>
+          </a>
+        </div>
       )
     })
   }
 
-  // This function was created by Claude (AI) to take seconds as an argument and return the time in days/months/years, etc for readability.
-  // It was modified by Jackson so the argument is instead the last_updated time of a thread
-  function getTime(updatedTime) {
-    const seconds = (parseInt(Date.now() / 1000) - updatedTime)
-    const minute = 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-    const week = day * 7;
-    const month = day * 30;
-    const year = day * 365;
-
-    if (seconds < minute) {
-      return seconds === 1 ? "1 second" : `${seconds} seconds`;
-    } else if (seconds < hour) {
-      const minutes = Math.floor(seconds / minute);
-      return minutes === 1 ? "1 minute" : `${minutes} minutes`;
-    } else if (seconds < day) {
-      const hours = Math.floor(seconds / hour);
-      return hours === 1 ? "1 hour" : `${hours} hours`;
-    } else if (seconds < week) {
-      const days = Math.floor(seconds / day);
-      return days === 1 ? "1 day" : `${days} days`;
-    } else if (seconds < month) {
-      const weeks = Math.floor(seconds / week);
-      return weeks === 1 ? "1 week" : `${weeks} weeks`;
-    } else if (seconds < year) {
-      const months = Math.floor(seconds / month);
-      return months === 1 ? "1 month" : `${months} months`;
-    } else {
-      const years = Math.floor(seconds / year);
-      return years === 1 ? "1 year" : `${years} years`;
-    }
-  }
 
   return (
     <div className="h-[200%]">
       <div className="h-screen overflow-y-scroll pb-48" id="homecards">
-        {cards}
+        <div
+          className="fixed bg-gradient-to-r from-rose-300/55 via-emerald-100/55 to-orange-300/55 backdrop-blur-sm w-full flex flex-row justify-center">
+          <button
+            className="bg-white/60 font-bold text-zinc-800 hover:text-black border-white border mx-auto my-2 md:my-2 py-1 px-3 rounded-md hover:bg-white/85"
+            onClick={() => clickNewThread()}>
+            New thread
+          </button>
+        </div>
+        <div className="pt-12 text-center">
+
+          {newThread}
+          {cards}
+          End of threads
+        </div>
       </div>
     </div>
   );
