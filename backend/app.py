@@ -180,5 +180,40 @@ def new_thread():
         return {"error": "No username in request"}, 400
 
 
+@app.route('/api/account/changepassword', methods=['POST'])
+def account_changepassword():
+    print(request.json['userId'])
+    if "oldPassword" in request.json and "newPassword" in request.json and "userId" in request.json:
+        user = User.query.filter(User.id == request.json['userId']).first()
+        if user:
+            if user.check_password(request.json['oldPassword']):
+                user.password_hash = request.json['newPassword']
+                db.session.commit()
+                return {"message": "Password changed successfully"}, 200
+            else:
+                return {"error": "Incorrect password"}, 400
+        else:
+            return {"error": "User not found"}, 404
+    else:
+        return {"error": "Incorrect parameters"}, 400
+
+
+@app.route('/api/account/delete', methods=['POST'])
+def account_delete():
+    if "password" in request.json and "userId" in request.json:
+        user = User.query.filter(User.id == request.json['userId']).first()
+        if user:
+            if user.check_password(request.json['password']):
+                db.session.delete(user)
+                db.session.commit()
+                return {"message": "Account deleted successfully"}, 200
+            else:
+                return {"error": "Incorrect password"}, 400
+        else:
+            return {"error": "User not found"}, 404
+    else:
+        return {"error": "Incorrect parameters"}, 400
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000, debug=True)
