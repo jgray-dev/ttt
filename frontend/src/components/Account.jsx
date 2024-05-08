@@ -66,12 +66,12 @@ export default function Account({hideAccount, user, setUser}) {
 
 
   return (
-    <div className={`fixed w-full h-full bg-black/30 text-white z-50`}
+    <div className={`fixed w-screen h-screen bg-black/30 backdrop-blur-sm text-white z-50`}
          onClick={() => {
            hideAccount()
          }}>
       <div
-        className="mt-12 h-[80%] w-[95%] sm:w-[80%] bg-black/90 mx-auto rounded-3xl p-3"
+        className="mt-24 h-fit w-[95%] sm:w-[80%] bg-black/30 mx-auto rounded-3xl p-3 z-50"
         onClick={(event) => {
           event.stopPropagation();
         }}
@@ -82,8 +82,9 @@ export default function Account({hideAccount, user, setUser}) {
           </div>
           :
           <div>
-            <div className="bg-black/50 justify-between roudned-lg flex lg:flex-row flex-col h-full w-full text-center">
-              <div className="h-full w-full mr-2">
+            <div
+              className="bg-black/50 rounded-md p-4 justify-between roudned-lg flex lg:flex-row flex-col h-full w-full text-center">
+              <div className="h-full w-full mr-2 py-8">
                 <span className="text-white text-xl">Sign in</span>
                 <div className="flex flex-col">
                   <div>
@@ -113,7 +114,7 @@ export default function Account({hideAccount, user, setUser}) {
                   <button className="bg-sky-300 mx-auto px-4 py-2 rounded-lg" onClick={() => signIn()}>Sign In</button>
                 </div>
               </div>
-              <div className="h-full w-full md:ml-2 md:mt-0 mt-4">
+              <div className="h-full w-full md:ml-2 my-8">
                 <span className="text-white text-xl">Sign up</span>
 
 
