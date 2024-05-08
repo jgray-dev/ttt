@@ -2,7 +2,7 @@ import {useState} from "react";
 import {url} from "../App.jsx";
 import {deleteAllCookies, updateCookie} from "./Functions.js";
 
-export default function Account({hideAccount, user, setUser, logOut}) {
+export default function Account({hideAccount, user, setUser, logOut, userid}) {
   const [siUsername, setSiUsername] = useState("")
   const [siPassword, setSiPassword] = useState("")
 
@@ -27,9 +27,10 @@ export default function Account({hideAccount, user, setUser, logOut}) {
       .then(r => r.json())
       .then(resp => {
         console.log(resp)
-        if (resp.message) {
+        if (!resp.error) {
+          console.log(resp)
           setUser(siUsername)
-          updateCookie(siUsername)
+          updateCookie(resp.username, resp.id)
           hideAccount()
         } else {
           alert(resp.error)
@@ -55,7 +56,7 @@ export default function Account({hideAccount, user, setUser, logOut}) {
           .then(r => r.json())
           .then(resp => {
             if (resp.id) {
-              updateCookie(resp.username)
+              updateCookie(resp.username, resp.id)
               setUser(resp.username)
               hideAccount()
             } else {
