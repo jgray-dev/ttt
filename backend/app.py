@@ -4,6 +4,7 @@ import os
 from database import *
 from flask_migrate import Migrate
 from utilities import *
+import time
 
 
 @app.route('/api/threads/<int:page>', methods=['GET'])
@@ -128,7 +129,56 @@ def get_session():
         return {"message": "session not found"}, 400
 
 
+@app.route('/api/newpost', methods=['POST'])
+def new_post():
+    if "username" in request.json:
+        if "thread_id" in request.json:
+            if "content" in request.json:
+                user = User.query.filter(User.username == request.json['username']).first()
+                if user:
+                    thread = Thread.query.filter(Thread.id == request.json['thread_id']).first()
+                    if thread:
+                        thread.last_updated = int(time.time())
+                        newpost = Post(content=request.json['content'], time_created=int(time.time()),
+                                       thread_id=thread.id, author_id=user.id, author=user, thread=thread)
+                        db.session.add(newpost)
+                        db.session.add(thread)
+                        db.session.commit()
+                        return newpost.to_dict()
+                    else:
+                        return {"error": "Thread not found"}, 404
+                else:
+                    return {"error": "User not found"}, 404
+            else:
+                return {"error": "No username in request"}, 400
+        else:
+            return {"error": "No thread id in request"}, 400
+    else:
+        return {"error": "No username in request"}, 400
+
+
+@app.route('/api/newthread', methods=['POST'])
+def new_thread():
+    if "username" in request.json:
+        if "title" in request.json:
+            if "content" in request.json:
+                user = User.query.filter(User.username == request.json['username']).first()
+                if user:
+                    newthread = Thread(author_id=user.id, title=request.json['title'],
+                                       content=request.json['content'], time_created=int(time.time()),
+                                       last_updated=int(time.time()))
+                    db.session.add(newthread)
+                    db.session.commit()
+                    return newthread.to_dict()
+                else:
+                    return {"error": "User not found"}, 404
+            else:
+                return {"error": "No username in request"}, 400
+        else:
+            return {"error": "No thread id in request"}, 400
+    else:
+        return {"error": "No username in request"}, 400
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000, debug=True)
-
-# test for merge from jackson branch
