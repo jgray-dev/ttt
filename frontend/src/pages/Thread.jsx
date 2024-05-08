@@ -125,7 +125,7 @@ function Thread({user}) {
           .then(response => {
             if (response.id) {
               hideReply()
-              navigate(`/thread/${id}`)
+              location.reload();
             }
             console.log(response)
           })
