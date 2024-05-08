@@ -22,8 +22,10 @@ function Thread() {
       <div className="h-full w-full bg-red-400">
         <h2>{thread.title}</h2>
         {posts.map((post, index) => (
-          <div key={index}>
-            <p>{post.content}</p>
+          <div key={index} className="border border-gray-300 p-4 mb-4">
+            <h3 className="text-lg font-bold">{post.author.username}</h3> {/* Display the author's username */}
+            <p className="text-sm text-gray-500">{new Date(post.time_created * 1000).toLocaleString()}</p> {/* Convert unix timestamp to date string */}
+            <p className="mt-2">{post.content}</p>
           </div>
         ))}
       </div>
