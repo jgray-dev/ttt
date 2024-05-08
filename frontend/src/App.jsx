@@ -6,6 +6,7 @@ import {BrowserRouter, Link, Navigate, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Guidelines from "./pages/Guidelines.jsx";
 import Thread from "./pages/Thread.jsx";
+import {readCookie} from "./components/Functions.js";
 
 export const url = 'http://67.164.191.36:4000/api'
 
@@ -18,16 +19,24 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(`${url}/checksession`)
-      .then(r => r.json())
-      .then(resp => {
-        if (resp.ok) {
-          console.log("CS: ", resp)
-          setUser(resp['user'])
-        } else {
-          console.log("NOT OK CS")
-        }
-      })
+//    Sessions wont work on Vite/home backend server. Using cookies as alternative
+//    fetch(`${url}/checksession`)
+//      .then(r => r.json())
+//      .then(resp => {
+//        if (resp.ok) {
+//          console.log("CS: ", resp)
+//          setUser(resp['user'])
+//        } else {
+//          console.log("NOT OK CS")
+//        }
+//      })
+
+
+    const cookies = readCookie()
+    if (cookies.username) {
+      console.log(cookies.username)
+      setUser(cookies.username)
+    }
 
     fetch(`${url}/threads/1`)
       .then(r => r.json())
@@ -36,13 +45,17 @@ function App() {
       });
   }, []);
 
+  function logOut() {
+    updateUser(undefined)
+  }
+
 
   return (
     <div className="">
       <BrowserRouter>
         <Backdrop/>
         <div className="fixed top-16 w-full h-full bg-black/25">
-          <Navbar user={user} setUser={setUser}/>
+          <Navbar user={user} setUser={setUser} logOut={logOut}/>
           <Routes>
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="/home" element={<Home threads={threads} user={user}/>}/>
