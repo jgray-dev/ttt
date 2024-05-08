@@ -8,7 +8,7 @@
         radial-gradient(at 82% 74%, hsla(276, 62%, 70%, 1) 0px, transparent 50%),
         radial-gradient(at 87% 9%, hsla(223, 62%, 79%, 1) 0px, transparent 50%);
     background-size: 300% 300%;
-    animation: backdrop-animation 10s ease-in-out infinite;
+    animation: backdrop-animation 20s ease-in-out infinite;
 }
 
 @keyframes backdrop-animation {
