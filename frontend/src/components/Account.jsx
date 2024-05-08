@@ -82,13 +82,16 @@ export default function Account({hideAccount, user, setUser, logOut}) {
       >
         {user ?
           <div>
-            <button className="bg-blue-400 px-4 py-2" onClick={() => {
-              logOut()
-              hideAccount()
-              deleteAllCookies()
-              alert("Signed out successfully")
-            }}>Log out
-            </button>
+            <div className="w-full p-4">
+              <div className={"text-xl font-bold text-white my-3"}>Currently signed in as {user}</div>
+              <button className="bg-red-400 px-4 py-2 rounded-md" onClick={() => {
+                logOut()
+                hideAccount()
+                deleteAllCookies()
+                alert("Signed out successfully")
+              }}>Log out
+              </button>
+            </div>
           </div>
           :
           <div>
