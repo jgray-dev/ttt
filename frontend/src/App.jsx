@@ -11,7 +11,6 @@ export const url = 'http://67.164.191.36:4000/api'
 
 function App() {
   const [threads, setThreads] = useState()
-  const [pageNumber, setPageNumber] = useState(1)
   const [user, updateUser] = useState()
 
   function setUser(newUser) {
@@ -30,11 +29,10 @@ function App() {
         }
       })
 
-    fetch(`${url}/threads/${pageNumber}`)
+    fetch(`${url}/threads/1`)
       .then(r => r.json())
       .then(data => {
-        const sortedThreads = data.sort((a, b) => b.last_updated - a.last_updated);
-        setThreads(sortedThreads);
+        setThreads(data);
       });
   }, []);
 
