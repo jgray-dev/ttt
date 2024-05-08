@@ -5,7 +5,6 @@ import {getTime} from "../components/Functions.js";
 import {IoIosCloseCircleOutline} from "react-icons/io";
 
 function Thread({user}) {
-  const navigate = useNavigate()
   const repliesRef = useRef(null);
   const {id} = useParams();
   const [thread, setThread] = useState();
