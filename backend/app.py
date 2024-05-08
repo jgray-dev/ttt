@@ -43,7 +43,7 @@ def get_posts(thread_id, page):
         thread = Thread.query.get(thread_id)
         if thread:
             posts = Post.query.filter_by(thread_id=thread_id) \
-                .order_by(Post.time_created.desc()) \
+                .order_by(Post.time_created.asc()) \
                 .slice(slice_start, slice_end) \
                 .all()
             if posts:
