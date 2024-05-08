@@ -13,7 +13,7 @@ export default function Account({hideAccount, user, setUser}) {
 
   function signIn() {
     console.log(siUsername, siPassword)
-    fetch(`${url}/account/signin`, {
+    fetch(`/account/signin`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

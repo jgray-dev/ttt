@@ -11,6 +11,7 @@ export const url = 'http://localhost:4000/api'
 
 function App() {
   const [threads, setThreads] = useState()
+  const [pageNumber, setPageNumber] = useState(1)
   const [user, updateUser] = useState()
 
   function setUser(newUser) {
@@ -18,7 +19,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(`/checksession`)
+    fetch(`${url}/checksession`)
       .then(r => r.json())
       .then(resp => {
         if (resp.ok) {
@@ -29,7 +30,7 @@ function App() {
         }
       })
 
-    fetch(`${url}/threads`)
+    fetch(`${url}/threads/${pageNumber}`)
       .then(r => r.json())
       .then(data => {
         const sortedThreads = data.sort((a, b) => b.last_updated - a.last_updated);
