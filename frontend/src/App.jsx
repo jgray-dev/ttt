@@ -56,7 +56,7 @@ function App() {
                 )) : <></>}
               </div>
             }/>
-            <Route path="/thread/:id" element={<Thread/>}/>
+            <Route path="/thread/:id" element={<Thread user={user}/>}/>
           </Routes>
         </div>
       </BrowserRouter>
