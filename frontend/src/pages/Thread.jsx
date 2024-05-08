@@ -1,10 +1,11 @@
 import {useEffect, useState, useRef} from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {url} from "../App.jsx";
 import {getTime} from "../components/Functions.js";
 import {IoIosCloseCircleOutline} from "react-icons/io";
 
 function Thread({user}) {
+  const navigate = useNavigate()
   const repliesRef = useRef(null);
   const {id} = useParams();
   const [thread, setThread] = useState();
@@ -26,6 +27,7 @@ function Thread({user}) {
   useEffect(() => {
     getPosts();
   }, [page]);
+
 
   function getPosts() {
     setLoading(true);
@@ -73,9 +75,9 @@ function Thread({user}) {
   function formatPosts() {
     return posts.map((post, index) => (
         <div key={index} id={post.time_created}
-             className="border border-gray-300 p-4 mb-4 md:mx-10 mx-4 rounded-lg bg-white/25">
+             className="p-4 mb-4 md:mx-10 mx-4 bg-white/15 text-zinc-100 rounded-lg">
           <h3 className="text-lg font-bold">{post.author.username}</h3>
-          <p className="text-sm text-gray-500">{getTime(post.time_created)} ago</p>
+          <p className="text-sm text-zinc-300">{getTime(post.time_created)} ago</p>
           <p className="mt-2">{post.content}</p>
         </div>
       )
@@ -123,6 +125,7 @@ function Thread({user}) {
           .then(response => {
             if (response.id) {
               hideReply()
+              navigate(`/thread/${id}`)
             }
             console.log(response)
           })
@@ -183,9 +186,9 @@ function Thread({user}) {
             </button>
           </div>
           <div key={thread.time_created}
-               className="border border-gray-300 p-4 md:mx-10 mx-4 mb-20 rounded-lg bg-white/25 mt-24">
+               className="p-4 md:mx-10 mx-4 mb-20 rounded-lg bg-white/15 text-white  mt-24">
             <h3 className="text-lg font-bold">{thread.author.username}</h3>
-            <p className="text-sm text-gray-500">{getTime(thread.time_created)} ago</p>
+            <p className="text-sm text-zinc-300">{getTime(thread.time_created)} ago</p>
             <p className="mt-2">{thread.content}</p>
           </div>
           {postCards}
