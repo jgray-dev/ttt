@@ -54,7 +54,7 @@ function Thread({user}) {
         const scrollTop = div.scrollTop;
         const scrollHeight = div.scrollHeight;
         const clientHeight = div.clientHeight;
-        if (scrollTop + clientHeight >= scrollHeight - 250 && !loading) {
+        if (scrollTop + clientHeight >= scrollHeight - 450 && !loading) {
           setPage(prevPage => prevPage + 1);
         }
       }
