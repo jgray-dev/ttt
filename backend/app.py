@@ -32,9 +32,6 @@ def get_thread(query_id):
         return {"error", "Thread not found"}, 404
 
 
-from sqlalchemy import func
-
-
 @app.route('/api/posts/<int:thread_id>/<int:page>', methods=['GET'])
 def get_posts(thread_id, page):
     if page > 0:

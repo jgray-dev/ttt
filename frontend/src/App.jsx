@@ -20,21 +20,7 @@ function App() {
   }
 
   useEffect(() => {
-//    Sessions wont work on Vite/home backend server. Using cookies as alternative
-//    fetch(`${url}/checksession`)
-//      .then(r => r.json())
-//      .then(resp => {
-//        if (resp.ok) {
-//          console.log("CS: ", resp)
-//          setUser(resp['user'])
-//        } else {
-//          console.log("NOT OK CS")
-//        }
-//      })
-
-
     const cookies = readCookie()
-    console.log("cookies: ", cookies)
     if (cookies.username) {
       setUser(cookies.username)
       setUserId(cookies.id)
