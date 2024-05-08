@@ -8,7 +8,7 @@ import Guidelines from "./pages/Guidelines.jsx";
 import Thread from "./pages/Thread.jsx";
 import {readCookie} from "./components/Functions.js";
 
-export const url = 'http://67.164.191.36:4000/api'
+export const url = 'https://mynameisnt.kim/ttt/api'
 
 function App() {
   const [threads, setThreads] = useState()
