@@ -12,9 +12,9 @@ with app.app_context():
     Post.query.delete()
 
     # Create users
-    print("Creating 20 users")
+    print("Creating 10 users")
     users = []
-    for _ in range(20):
+    for _ in range(10):
         user = User(
             username=fake.user_name(),
             email=fake.email(),
@@ -25,9 +25,9 @@ with app.app_context():
     db.session.commit()
 
     # Create threads
-    print("Creating 1000 threads")
+    print("Creating 500 threads")
     threads = []
-    for _ in range(1000):
+    for _ in range(500):
         start_date = fake.date_time_between(start_date='-24h', end_date='now')
         end_date = fake.date_time_between(start_date=start_date, end_date='now')
         author = random.choice(users)  # Select a random user as the author
@@ -43,16 +43,17 @@ with app.app_context():
     db.session.commit()
 
     # Create posts
-    print("Creating 500 posts")
-    for _ in range(500):
-        post_date = fake.date_time_between(start_date='-1y', end_date='now')
+    print("Creating 50000 posts")
+    for _ in range(50000):
+        post_date = fake.date_time_between(start_date='-24h', end_date='now')
         thread = random.choice(threads)  # Select a random thread for the post
         author = random.choice(users)  # Select a random user as the author
         post = Post(
             content=fake.paragraph(nb_sentences=3, variable_nb_sentences=True),
-            time_created=post_date.timestamp(),
+            time_created=int(post_date.timestamp()),
             thread=thread,  # Assign the thread to the post
             author=author  # Assign the author to the post
         )
         db.session.add(post)
     db.session.commit()
+    print("Done")

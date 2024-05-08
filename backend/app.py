@@ -26,9 +26,34 @@ def get_threads(page):
 def get_thread(query_id):
     thread = Thread.query.filter(Thread.id == query_id).first()
     if thread:
-        return thread.to_dict()
+        return thread.to_dict(rules=('-posts',))
     else:
         return {"error", "Thread not found"}, 404
+
+
+from sqlalchemy import func
+
+
+@app.route('/api/posts/<int:thread_id>/<int:page>', methods=['GET'])
+def get_posts(thread_id, page):
+    if page > 0:
+        slice_start = (page - 1) * 25
+        slice_end = page * 25
+
+        thread = Thread.query.get(thread_id)
+        if thread:
+            posts = Post.query.filter_by(thread_id=thread_id) \
+                .order_by(Post.time_created.desc()) \
+                .slice(slice_start, slice_end) \
+                .all()
+            if posts:
+                return [post.to_dict() for post in posts]
+            else:
+                return {"error": "No posts found for the given thread and page"}, 404
+        else:
+            return {"error": "Thread not found"}, 404
+    else:
+        return {"error": "Invalid page number"}, 400
 
 
 @app.route('/api/users', methods=['GET'])
