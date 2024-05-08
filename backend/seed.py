@@ -25,9 +25,9 @@ with app.app_context():
     db.session.commit()
 
     # Create threads
-    print("Creating 1000 threads")
+    print("Creating 500 threads")
     threads = []
-    for _ in range(1000):
+    for _ in range(500):
         start_date = fake.date_time_between(start_date='-24h', end_date='now')
         end_date = fake.date_time_between(start_date=start_date, end_date='now')
         author = random.choice(users)  # Select a random user as the author
@@ -43,8 +43,8 @@ with app.app_context():
     db.session.commit()
 
     # Create posts
-    print("Creating 5000 posts")
-    for _ in range(5000):
+    print("Creating 50000 posts")
+    for _ in range(50000):
         post_date = fake.date_time_between(start_date='-24h', end_date='now')
         thread = random.choice(threads)  # Select a random thread for the post
         author = random.choice(users)  # Select a random user as the author
