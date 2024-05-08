@@ -13,7 +13,7 @@ export default function Account({hideAccount, user, setUser}) {
 
   function signIn() {
     console.log(siUsername, siPassword)
-    fetch(`/account/signin`, {
+    fetch(`${url}/account/signin`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -66,12 +66,12 @@ export default function Account({hideAccount, user, setUser}) {
 
 
   return (
-    <div className={`fixed w-full h-full bg-black/30 text-white`}
+    <div className={`fixed w-full h-full bg-black/30 text-white z-50`}
          onClick={() => {
            hideAccount()
          }}>
       <div
-        className="mt-12 h-[80%]  w-[95%] sm:w-[80%] bg-black/90 mx-auto rounded-3xl p-3"
+        className="mt-12 h-[80%] w-[95%] sm:w-[80%] bg-black/90 mx-auto rounded-3xl p-3"
         onClick={(event) => {
           event.stopPropagation();
         }}
