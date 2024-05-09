@@ -1,12 +1,24 @@
-import {useEffect, useState, useRef} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import {url} from "../App.jsx";
-import {getTime} from "../components/Functions.js";
-import {IoIosCloseCircleOutline} from "react-icons/io";
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { url } from "../App.jsx";
+import { getTime } from "../components/Functions.js";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
-function Thread({user}) {
+function formatPostContent(content) {
+  // Regular expression to match YouTube URLs
+  const youTubeRegex = /!https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([^&\s]+)/g;
+
+  // Replace matched URLs with an embedded video
+  const formattedContent = content.replace(youTubeRegex, (match, videoId) => {
+    return `<div className="video-container"><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>`;
+  });
+
+  return formattedContent;
+}
+
+function Thread({ user }) {
   const repliesRef = useRef(null);
-  const {id} = useParams();
+  const { id } = useParams();
   const [thread, setThread] = useState();
   const [page, setPage] = useState(1);
   const [postCards, setCards] = useState();
@@ -73,15 +85,14 @@ function Thread({user}) {
 
   function formatPosts() {
     return posts.map((post, index) => (
-        <div key={index} id={post.time_created}
-             className="p-4 mb-4 md:mx-10 mx-4 bg-white/15 text-zinc-100 rounded-lg">
-          <h3 className="text-lg font-bold">{post.author.username}</h3>
-          <p className="text-sm text-zinc-300">{getTime(post.time_created)} ago</p>
-          <p className="mt-2">{post.content}</p>
-        </div>
-      )
-    );
+      <div key={index} id={post.time_created} className="p-4 mb-4 md:mx-10 mx-4 bg-white/15 text-zinc-100 rounded-lg">
+        <h3 className="text-lg font-bold">{post.author.username}</h3>
+        <p className="text-sm text-zinc-300">{getTime(post.time_created)} ago</p>
+        <div dangerouslySetInnerHTML={{ __html: formatPostContent(post.content) }} />
+      </div>
+    ));
   }
+
 
 
   function hideReply() {
