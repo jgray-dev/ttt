@@ -94,7 +94,6 @@ function Thread({ user }) {
   }
 
 
-
   function hideReply() {
     setReply(<></>)
     setReplyOpen(false)
