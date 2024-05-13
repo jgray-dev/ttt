@@ -83,16 +83,32 @@ function Thread({ user }) {
     };
   }, [loading]);
 
-  function formatPosts() {
-    return posts.map((post, index) => (
-      <div key={index} id={post.time_created} className="p-4 mb-4 md:mx-10 mx-4 bg-white/15 text-zinc-100 rounded-lg">
-        <h3 className="text-lg font-bold">{post.author.username}</h3>
-        <p className="text-sm text-zinc-300">{getTime(post.time_created)} ago</p>
-        <div dangerouslySetInnerHTML={{ __html: formatPostContent(post.content) }} />
-      </div>
-    ));
-  }
+// This function formats the content of each post
+function formatPostContent(content) {
+  const youTubeRegex = /!https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([^&\s]+)/g;
+  const imageRegex = /!\b(https?:\/\/\S*\.(?:png|jpg|jpeg|gif|svg))\b/g;
 
+  let formattedContent = content.replace(youTubeRegex, (match, videoId) => {
+    return `<div className="video-container"><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>`;
+  });
+
+  formattedContent = formattedContent.replace(imageRegex, (match, imageUrl) => {
+    return `<img src="${imageUrl}" alt="Embedded Image" style="max-width: 100%; height: auto;" />`;
+  });
+
+  return formattedContent;
+}
+
+// This function is responsible for rendering the posts
+function formatPosts() {
+  return posts.map((post, index) => (
+    <div key={index} id={post.time_created} className="p-4 mb-4 md:mx-10 mx-4 bg-white/15 text-zinc-100 rounded-lg">
+      <h3 className="text-lg font-bold">{post.author.username}</h3>
+      <p className="text-sm text-zinc-300">{getTime(post.time_created)} ago</p>
+      <div dangerouslySetInnerHTML={{ __html: formatPostContent(post.content) }} />
+    </div>
+  ));
+}
 
   function hideReply() {
     setReply(<></>)
