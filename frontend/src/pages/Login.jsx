@@ -1,52 +1,43 @@
-import React, { useState } from "react";
-import { url } from "../App.jsx"; // Ensure this points to your API's base URL
+// Login.jsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Login = ({ setUser, logOut, user }) => {
+  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
 
-  function signIn() {
-    console.log(username, password);
-    fetch(`${url}/account/signin`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "username": username,
-        "password": password
-      })
-    })
-    .then(r => r.json())
-    .then(resp => {
-      console.log(resp);
-      if (!resp.error) {
-        // Handle successful login here
-        console.log("Login successful", resp);
-        // Redirect user, update context/state, etc.
-      } else {
-        alert(resp.error);
-      }
-    });
-  }
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Assuming setUser is a function that updates the user's state
+    setUser(username);
+    navigate('/home'); // Redirect to home after login
+  };
+
+  const handleLogout = () => {
+    logOut();
+    navigate('/home'); // Redirect to home after logout
+  };
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={signIn}>Sign In</button>
+      {user ? (
+        <div>
+          <h2>You are logged in as {user}</h2>
+          <button onClick={handleLogout}>Log Out</button>
+        </div>
+      ) : (
+        <form onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <button type="submit">Log In</button>
+        </form>
+      )}
     </div>
   );
-}
+};
 
 export default Login;

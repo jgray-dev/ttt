@@ -6,7 +6,7 @@ import {BrowserRouter, Link, Navigate, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Guidelines from "./pages/Guidelines.jsx";
 import Thread from "./pages/Thread.jsx";
-import login from "./pages/Login.jsx";
+// import login from "./pages/Login.jsx";
 import {readCookie} from "./components/Functions.js";
 
 export const url = 'https://mynameisnt.kim/ttt/api'
@@ -50,7 +50,7 @@ function App() {
             <Route path="/" element={<Navigate to="/home"/>}/>
             <Route path="/home" element={<Home threads={threads} user={user}/>}/>
             <Route path="/guidelines" element={<Guidelines/>}/>
-            <Route path="/login" element={<Login setUser={setUser} logOut={logOut} user={user}/>}/>
+            {/* <Route path="/login" element={<Login setUser={setUser} logOut={logOut} user={user}/>}/> */}
             <Route element={
               <div>
                 {threads ? threads.map(thread => (
